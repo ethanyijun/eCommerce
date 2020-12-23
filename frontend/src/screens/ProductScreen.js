@@ -19,7 +19,7 @@ const ProductScreen = () => {
             return data;
         }
         fetchProduct()
-    }, [])
+    }, [id])
 
     return (
         <div>
