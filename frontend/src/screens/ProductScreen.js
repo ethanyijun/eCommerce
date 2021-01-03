@@ -7,13 +7,14 @@ import Loader from "../components/Loader";
 import { listProductDetails } from "../actions/productActions";
 import { Link, useParams } from "react-router-dom";
 import "../index.css";
+import { addToCart } from "../actions/cartActions";
 
 const ProductScreen = ({ history }) => {
   const dispatch = useDispatch();
   const productDetails = useSelector((state) => state.productDetails);
   const { loading, error, product } = productDetails;
   const { id } = useParams();
-  const [qty, setQty] = useState("");
+  const [qty, setQty] = useState(1);
   const [showError, setShowError] = React.useState(false);
 
   const onChange = (event) => {
@@ -32,7 +33,8 @@ const ProductScreen = ({ history }) => {
   const ErrorInfo = () => <div>Insufficient stock</div>;
 
   const addToCartHandler = () => {
-    history.push(`/cart/${id}?qty=${qty}`);
+    dispatch(addToCart(id, Number(qty)));
+    // history.push(`/cart/${id}?qty=${qty}`);
   };
 
   return (

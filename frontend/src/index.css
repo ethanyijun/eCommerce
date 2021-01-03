@@ -13,3 +13,16 @@ h3 {
 .amount-input {
   width: 100%;
 }
+
+.CartCount {
+  font-size: 9px;
+  background: #ff0000;
+  color: #fff;
+  padding: 1px 3px;
+  vertical-align: top;
+  margin-left: -3px;
+  margin-top: -3px;
+  -webkit-border-radius: 9px;
+  -moz-border-radius: 9px;
+  border-radius: 9px;
+}
