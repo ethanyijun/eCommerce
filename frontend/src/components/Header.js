@@ -2,9 +2,11 @@ import React from "react";
 import { Container, Nav, Navbar } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import "../index.css";
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 
 const Header = (props) => {
+  const cart = useSelector((state) => state.cart);
+  const { cartItems } = cart;
   return (
     <header>
       <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
@@ -18,7 +20,7 @@ const Header = (props) => {
               <LinkContainer to="/cart">
                 <Nav.Link>
                   <i className="fas fa-shopping-cart"></i>
-                  <span className="badge CartCount">{props.totalCount}</span>
+                  <span className="badge CartCount">{cartItems.length}</span>
                   Cart
                 </Nav.Link>
               </LinkContainer>
@@ -35,10 +37,4 @@ const Header = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    totalCount: state.cart.cartItems.length,
-  };
-};
-
-export default connect(mapStateToProps)(Header);
+export default Header;
