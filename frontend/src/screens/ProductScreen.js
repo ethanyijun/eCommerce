@@ -8,31 +8,32 @@ import { listProductDetails } from "../actions/productActions";
 import { Link, useParams } from "react-router-dom";
 import "../index.css";
 
-const ProductScreen = () => {
+const ProductScreen = ({ history }) => {
   const dispatch = useDispatch();
   const productDetails = useSelector((state) => state.productDetails);
   const { loading, error, product } = productDetails;
   const { id } = useParams();
-  const [value, setValue] = useState("");
-  const [qty, setQty] = useState(0);
+  const [qty, setQty] = useState("");
   const [showError, setShowError] = React.useState(false);
 
   const onChange = (event) => {
-    setValue(event.target.value);
+    setQty(event.target.value);
   };
 
   useEffect(() => {
     dispatch(listProductDetails(id));
-    if (product.countInStock < value) {
+    if (product.countInStock < qty) {
       setShowError(true);
     } else {
       setShowError(false);
     }
-  }, [dispatch, id, value]);
+  }, [dispatch, id, qty, product.countInStock]);
 
   const ErrorInfo = () => <div>Insufficient stock</div>;
 
-  const addToCartHandler = () => {};
+  const addToCartHandler = () => {
+    history.push(`/cart/${id}?qty=${qty}`);
+  };
 
   return (
     <div>
@@ -91,7 +92,7 @@ const ProductScreen = () => {
                       <Col xs={6}>
                         <input
                           className="amount-input"
-                          value={value}
+                          value={qty}
                           onChange={onChange}
                         />
                         {showError ? <ErrorInfo /> : null}
