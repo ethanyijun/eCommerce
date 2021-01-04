@@ -11,13 +11,15 @@ import {
   Card,
   Button,
 } from "react-bootstrap";
-import { updateCart } from "../actions/cartActions";
+import { updateCart, removeFromCart } from "../actions/cartActions";
 
 const CartScreen = ({ history }) => {
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
   const dispatch = useDispatch();
-  const removeFromCartHandler = (id) => {};
+  const removeFromCartHandler = (id) => {
+    dispatch(removeFromCart(id));
+  };
   const checkOutHandler = () => {
     history.push("/login?redirect=shipping");
   };
