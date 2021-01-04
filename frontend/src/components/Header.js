@@ -20,7 +20,9 @@ const Header = (props) => {
               <LinkContainer to="/cart">
                 <Nav.Link>
                   <i className="fas fa-shopping-cart"></i>
-                  <span className="badge CartCount">{cartItems.length}</span>
+                  {cartItems.length > 0 && (
+                    <span className="badge CartCount">{cartItems.length}</span>
+                  )}{" "}
                   Cart
                 </Nav.Link>
               </LinkContainer>
