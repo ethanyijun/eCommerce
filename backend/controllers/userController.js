@@ -6,6 +6,7 @@ import generateToken from "../utils/generateToken.js";
 // @route  POST /api/users/login
 // @access Public
 const authUser = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
   const user = await User.findOne({
     email,
   });
@@ -29,7 +30,7 @@ const authUser = asyncHandler(async (req, res) => {
 const getUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
   if (user) {
-    res.json({
+    res.status(200).json({
       _id: user._id,
       name: user.name,
       email: user.email,
@@ -39,7 +40,31 @@ const getUserProfile = asyncHandler(async (req, res) => {
     res.status(401);
     throw new Error("User not found");
   }
-  res.send("Success");
 });
 
-export { authUser, getUserProfile };
+// @desc   Register a new User
+// @route  POST /api/users
+// @access Public
+const createUser = asyncHandler(async (req, res) => {
+  const { email, password, name } = req.body;
+  const userExists = await User.findOne({
+    email,
+  });
+  if (userExists) {
+    res.status(400);
+    throw new Error("User already exists");
+  }
+  const user = await User.create({
+    name,
+    email,
+    password,
+  });
+  if (user) {
+    res.send("Success");
+  } else {
+    res.status(401);
+    throw new Error("Invalid user data");
+  }
+});
+
+export { authUser, getUserProfile, createUser };
