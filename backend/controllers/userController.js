@@ -60,7 +60,12 @@ const createUser = asyncHandler(async (req, res) => {
     password,
   });
   if (user) {
-    res.send("Success");
+    res.status(200).json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      isAdmin: user.isAdmin,
+    });
   } else {
     res.status(401);
     throw new Error("Invalid user data");
