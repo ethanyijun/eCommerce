@@ -31,7 +31,7 @@ const App = () => {
           <Route path="/payment" component={PaymentScreen} exact />
           <Route path="/placeorder" component={PlaceOrderScreen} exact />
           <Route path="/order/:id" component={OrderScreen} exact />
-          <Route path="/admin/users" component={UserListScreen} exact />
+          <Route path="/admin/userlist" component={UserListScreen} exact />
         </Container>
       </main>
       <Footer />
