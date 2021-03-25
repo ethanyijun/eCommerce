@@ -1,15 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { Form, Button, Row, Col, Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import { USER_UPDATE_PROFILE_RESET } from "../constants/userConstants";
-import {
-  getUserDetails,
-  updateUserProfile,
-  login,
-} from "../actions/userActions";
+import { getUserDetails, updateUserProfile } from "../actions/userActions";
 import { getMyOrders } from "../actions/orderAction";
 import { LinkContainer } from "react-router-bootstrap";
 
@@ -30,19 +25,22 @@ const ProfileScreen = ({ location, history }) => {
   const { orders, loading: loadingOrders, error: errorOrders } = listMyOrders;
 
   useEffect(() => {
-    if (!userInfo) {
-      history.push("/login");
+    if (!userInfo) history.push("/login");
+  }, [userInfo, history]);
+
+  useEffect(() => {
+    dispatch(getMyOrders());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (!user || !user.name || success) {
+      dispatch({ type: USER_UPDATE_PROFILE_RESET });
+      dispatch(getUserDetails("profile"));
     } else {
-      if (!user || !user.name || success || !orders) {
-        dispatch({ type: USER_UPDATE_PROFILE_RESET });
-        dispatch(getUserDetails("profile"));
-        dispatch(getMyOrders());
-      } else {
-        setName(user.name);
-        setEmail(user.email);
-      }
+      setName(user.name);
+      setEmail(user.email);
     }
-  }, [history, userInfo, dispatch, user, success, orders]);
+  }, [dispatch, user, success]);
 
   const submitHandler = (e) => {
     e.preventDefault();
