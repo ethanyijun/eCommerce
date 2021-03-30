@@ -3,10 +3,7 @@ import { Form, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
-import {
-  listProductDetails,
-  updateProductDetails,
-} from "../actions/productActions";
+import { listProductDetails, updateProduct } from "../actions/productActions";
 import { useParams, Link } from "react-router-dom";
 import FormContainer from "../components/FormContainer";
 import { PRODUCT_UPDATE_RESET } from "../constants/productConstants";
@@ -23,6 +20,12 @@ const ProductEditScreen = ({ location, history }) => {
   const dispatch = useDispatch();
   const productDetails = useSelector((state) => state.productDetails);
   const { loading, error, product } = productDetails;
+  const productUpdate = useSelector((state) => state.productUpdate);
+  const {
+    loading: loadingUpdate,
+    error: errorUpdate,
+    success: successUpdate,
+  } = productUpdate;
   const { id } = useParams();
   //   const productUpdate = useSelector((state) => state.productUpdate);
   //   const {
@@ -31,14 +34,20 @@ const ProductEditScreen = ({ location, history }) => {
   //     success: updateSuccess,
   //   } = productUpdate;
 
-  //   useEffect(() => {
-  //     if (updateSuccess) {
-  //       dispatch({ type: USER_UPDATE_RESET });
-  //       history.push("/admin/userlist");
-  //     }
-  //   }, [updateSuccess, dispatch, history]);
+  useEffect(() => {
+    console.log("inside effect");
+
+    if (successUpdate) {
+      dispatch({ type: PRODUCT_UPDATE_RESET });
+      history.push("/admin/productlist");
+    } else {
+      dispatch(listProductDetails(id));
+    }
+  }, [successUpdate, dispatch, history, id]);
 
   useEffect(() => {
+    console.log("inside product", product);
+    console.log("id", id);
     if (!product || !product.name || product._id !== id) {
       dispatch(listProductDetails(id));
     } else {
@@ -54,6 +63,18 @@ const ProductEditScreen = ({ location, history }) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
+    dispatch(
+      updateProduct({
+        _id: id,
+        name,
+        price,
+        image,
+        brand,
+        category,
+        countInStock,
+        description,
+      })
+    );
   };
   return (
     <>
@@ -63,8 +84,8 @@ const ProductEditScreen = ({ location, history }) => {
 
       <FormContainer>
         <h1>Edit Product</h1>
-        {/* {loadingUpdate && <Loader />}
-        {errorUpdate && <Message variant="danger">{errorUpdate}</Message>} */}
+        {loadingUpdate && <Loader />}
+        {errorUpdate && <Message variant="danger">{errorUpdate}</Message>}
         {loading ? (
           <Loader />
         ) : error ? (
@@ -115,7 +136,7 @@ const ProductEditScreen = ({ location, history }) => {
               <Form.Label>Count In Stock</Form.Label>
               <Form.Control
                 type="number"
-                placeholder="Enter CountInStock"
+                placeholder="Enter Count In Stock"
                 value={countInStock}
                 onChange={(e) => setCountInStock(e.target.value)}
               />
