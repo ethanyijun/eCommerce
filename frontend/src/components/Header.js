@@ -1,17 +1,19 @@
 import React from "react";
 import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
+import { withRouter } from "react-router-dom";
 import { LinkContainer } from "react-router-bootstrap";
 import "../index.css";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../actions/userActions";
 
-const Header = (props) => {
+const Header = ({ history }) => {
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
   const logoutHandler = () => {
     dispatch(logout());
+    history.push("/");
   };
   const { cartItems } = cart;
   return (
@@ -69,5 +71,4 @@ const Header = (props) => {
     </header>
   );
 };
-
-export default Header;
+export default withRouter(Header);

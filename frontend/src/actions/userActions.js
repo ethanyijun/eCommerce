@@ -22,7 +22,7 @@ import {
   USER_DELETE_FAIL,
   USER_UPDATE_REQUEST,
   USER_UPDATE_SUCCESS,
-  USER_UPDATE_FAIL,
+  USER_UPDATE_FAIL
 } from "../constants/userConstants";
 import { ORDER_LIST_MY_RESET } from "../constants/orderConstants";
 import axios from "axios";
@@ -32,8 +32,8 @@ export const login = (email, password) => async (dispatch) => {
     dispatch({ type: USER_LOGIN_REQUEST });
     const config = {
       headers: {
-        "Content-Type": "application/json",
-      },
+        "Content-Type": "application/json"
+      }
     };
     const { data } = await axios.post(
       "/api/users/login",
@@ -48,7 +48,7 @@ export const login = (email, password) => async (dispatch) => {
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
-          : error.message,
+          : error.message
     });
   }
 };
@@ -60,6 +60,7 @@ export const logout = () => async (dispatch) => {
   dispatch({ type: USER_LIST_RESET });
 
   localStorage.removeItem("userInfo");
+  localStorage.removeItem("cartItems");
 };
 
 export const register = (email, password, name) => async (dispatch) => {
@@ -67,8 +68,8 @@ export const register = (email, password, name) => async (dispatch) => {
     dispatch({ type: USER_REGISTER_REQUEST });
     const config = {
       headers: {
-        "Content-Type": "application/json",
-      },
+        "Content-Type": "application/json"
+      }
     };
     const { data } = await axios.post(
       "/api/users",
@@ -85,7 +86,7 @@ export const register = (email, password, name) => async (dispatch) => {
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
-          : error.message,
+          : error.message
     });
   }
 };
@@ -94,12 +95,12 @@ export const listUsers = () => async (dispatch, getState) => {
   try {
     dispatch({ type: USER_LIST_REQUEST });
     const {
-      userLogin: { userInfo },
+      userLogin: { userInfo }
     } = getState();
     const config = {
       headers: {
-        Authorization: `Bearer ${userInfo.token}`,
-      },
+        Authorization: `Bearer ${userInfo.token}`
+      }
     };
     const { data } = await axios.get(`/api/users`, config);
     dispatch({ type: USER_LIST_SUCCESS, payload: data });
@@ -109,7 +110,7 @@ export const listUsers = () => async (dispatch, getState) => {
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
-          : error.message,
+          : error.message
     });
   }
 };
@@ -118,13 +119,13 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
   try {
     dispatch({ type: USER_DETAILS_REQUEST });
     const {
-      userLogin: { userInfo },
+      userLogin: { userInfo }
     } = getState();
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${userInfo.token}`,
-      },
+        Authorization: `Bearer ${userInfo.token}`
+      }
     };
     const { data } = await axios.get(`/api/users/${id}`, config);
     dispatch({ type: USER_DETAILS_SUCCESS, payload: data });
@@ -134,7 +135,7 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
-          : error.message,
+          : error.message
     });
   }
 };
@@ -144,14 +145,14 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
     dispatch({ type: USER_UPDATE_PROFILE_REQUEST });
 
     const {
-      userLogin: { userInfo },
+      userLogin: { userInfo }
     } = getState();
 
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${userInfo.token}`,
-      },
+        Authorization: `Bearer ${userInfo.token}`
+      }
     };
     const { data } = await axios.put(`/api/users/profile`, user, config);
 
@@ -164,7 +165,7 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
-          : error.message,
+          : error.message
     });
   }
 };
@@ -173,12 +174,12 @@ export const deleteUser = (id) => async (dispatch, getState) => {
   try {
     dispatch({ type: USER_DELETE_REQUEST });
     const {
-      userLogin: { userInfo },
+      userLogin: { userInfo }
     } = getState();
     const config = {
       headers: {
-        Authorization: `Bearer ${userInfo.token}`,
-      },
+        Authorization: `Bearer ${userInfo.token}`
+      }
     };
     await axios.delete(`/api/users/${id}`, config);
     dispatch({ type: USER_DELETE_SUCCESS });
@@ -188,7 +189,7 @@ export const deleteUser = (id) => async (dispatch, getState) => {
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
-          : error.message,
+          : error.message
     });
   }
 };
@@ -197,13 +198,13 @@ export const updateUser = (user) => async (dispatch, getState) => {
   try {
     dispatch({ type: USER_UPDATE_REQUEST });
     const {
-      userLogin: { userInfo },
+      userLogin: { userInfo }
     } = getState();
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${userInfo.token}`,
-      },
+        Authorization: `Bearer ${userInfo.token}`
+      }
     };
     const data = await axios.put(
       `/api/admin/users/${user._id}/edit`,
@@ -218,7 +219,7 @@ export const updateUser = (user) => async (dispatch, getState) => {
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
-          : error.message,
+          : error.message
     });
   }
 };
