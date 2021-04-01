@@ -7,7 +7,7 @@ import Loader from "../components/Loader";
 import {
   listProducts,
   deleteProduct,
-  createProduct,
+  createProduct
 } from "../actions/productActions";
 import { PRODUCT_CREATE_RESET } from "../constants/productConstants";
 
@@ -19,7 +19,7 @@ const ProductListScreen = ({ history, match }) => {
   const {
     success: successDelete,
     error: errorDelete,
-    loading: loadingDelete,
+    loading: loadingDelete
   } = productDelete;
 
   const userLogin = useSelector((state) => state.userLogin);
@@ -29,7 +29,7 @@ const ProductListScreen = ({ history, match }) => {
     success: successCreate,
     product: createdProduct,
     loading: loadingCreate,
-    error: errorCreate,
+    error: errorCreate
   } = productCreate;
 
   useEffect(() => {
@@ -48,7 +48,7 @@ const ProductListScreen = ({ history, match }) => {
     userInfo,
     successDelete,
     successCreate,
-    createdProduct,
+    createdProduct
   ]);
 
   const deleteHandler = (id) => {
