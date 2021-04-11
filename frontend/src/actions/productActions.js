@@ -146,14 +146,13 @@ export const createProductReview = (id, review) => async (
     const {
       userLogin: { userInfo }
     } = getState();
-
     const config = {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${userInfo.token}`
       }
     };
-    await axios.post(`/api/products/${id}/reviews`, { review }, config);
+    await axios.post(`/api/products/${id}/reviews`, review, config);
     dispatch({ type: PRODUCT_CREATE_REVIEW_SUCCESS });
   } catch (error) {
     dispatch({

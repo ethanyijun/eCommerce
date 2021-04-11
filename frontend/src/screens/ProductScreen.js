@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Image, ListGroup, Card, Button } from "react-bootstrap";
+import {
+  Row,
+  Col,
+  Image,
+  ListGroup,
+  Card,
+  Button,
+  Form
+} from "react-bootstrap";
 import Rating from "../components/Rating";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
@@ -36,19 +44,27 @@ const ProductScreen = ({ history }) => {
   };
 
   useEffect(() => {
-    dispatch(listProductDetails(id));
     if (product && product.countInStock < qty) {
       setShowError(true);
-    } else {
-      setShowError(false);
+    } else setShowError(false);
+
+    if (productReviewCreateSuccess) {
+      setRating(0);
+      setComment("");
     }
-  }, [dispatch, id, qty, product]);
+    dispatch({ type: PRODUCT_CREATE_REVIEW_RESET });
+    dispatch(listProductDetails(id));
+    // eslint-disable-next-line
+  }, [productReviewCreateSuccess, dispatch, id, comment, qty]);
 
   const ErrorInfo = () => <div>Insufficient stock</div>;
+  const submitHandler = (e) => {
+    e.preventDefault();
+    dispatch(createProductReview(id, { rating, comment }));
+  };
 
   const addToCartHandler = () => {
     dispatch(addToCart(id, Number(qty)));
-    // history.push(`/cart/${id}?qty=${qty}`);
   };
 
   return (
@@ -73,7 +89,7 @@ const ProductScreen = ({ history }) => {
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <Rating
-                    value={product.rating}
+                    value={product.rating || 0}
                     text={`${product.numReviews} reviews`}
                   />
                 </ListGroup.Item>
@@ -134,6 +150,9 @@ const ProductScreen = ({ history }) => {
           <Row>
             <Col md={6}>
               <h2>Reivews</h2>
+              {productReviewCreateError && (
+                <Message>{productReviewCreateError}</Message>
+              )}
               {product.reviews.length === 0 && <Message>No reviews</Message>}
               <ListGroup variant="flush">
                 {product.reviews.map((review) => (
@@ -144,6 +163,44 @@ const ProductScreen = ({ history }) => {
                     <p>{review.comment}</p>
                   </ListGroup.Item>
                 ))}
+                <ListGroup.Item>
+                  <h2>Write a Customer Review</h2>
+                  {userInfo ? (
+                    <Form onSubmit={submitHandler}>
+                      <Form.Group controlId="rating">
+                        <Form.Label>Rating</Form.Label>
+                        <Form.Control
+                          as="select"
+                          value={rating}
+                          onChange={(e) => setRating(e.target.value)}
+                        >
+                          <option value="">Select...</option>
+                          <option value="1">1 - Poor</option>
+                          <option value="2">2 - Fair</option>
+                          <option value="3">3 - Good</option>
+                          <option value="4">4 - Very Good</option>
+                          <option value="5">5 - Excellent</option>
+                        </Form.Control>
+                      </Form.Group>
+                      <Form.Group controlId="comment">
+                        <Form.Label>Comment</Form.Label>
+                        <Form.Control
+                          as="textarea"
+                          row="3"
+                          value={comment}
+                          onChange={(e) => setComment(e.target.value)}
+                        ></Form.Control>
+                      </Form.Group>
+                      <Button type="submit" variant="primary">
+                        Submit
+                      </Button>
+                    </Form>
+                  ) : (
+                    <Message>
+                      Please <Link to="/login">sign in</Link> to write a review
+                    </Message>
+                  )}
+                </ListGroup.Item>
               </ListGroup>
             </Col>
           </Row>
