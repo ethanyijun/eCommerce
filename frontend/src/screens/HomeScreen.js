@@ -7,18 +7,20 @@ import Loader from "../components/Loader";
 import Paginate from "../components/Paginate";
 import { listProducts } from "../actions/productActions";
 
-const HomeScreen = ({ match }) => {
+const HomeScreen = ({ match, history }) => {
   const dispatch = useDispatch();
   const keyword = match.params.keyword;
   const pageNumber = match.params.pageNumber || 1;
+  const pageSize = match.params.pageSize || 2;
+
   const productList = useSelector((state) => state.productList);
   const { loading, error, products, page, pages } = productList;
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
   useEffect(() => {
-    dispatch(listProducts(keyword, pageNumber));
-  }, [dispatch, keyword, pageNumber]);
+    dispatch(listProducts(keyword, pageNumber, pageSize));
+  }, [dispatch, keyword, pageNumber, pageSize]);
 
   return (
     <>
@@ -41,6 +43,7 @@ const HomeScreen = ({ match }) => {
             pages={pages}
             isAdmin={userInfo?.isAdmin}
             keyword={keyword ? keyword : ""}
+            history={history}
           />
         </>
       )}

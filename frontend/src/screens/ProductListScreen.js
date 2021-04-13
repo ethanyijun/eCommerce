@@ -33,6 +33,7 @@ const ProductListScreen = ({ history, match }) => {
     error: errorCreate
   } = productCreate;
   const pageNumber = match.params.pageNumber || 1;
+  const pageSize = match.params.pageSize || 2;
 
   useEffect(() => {
     dispatch({ type: PRODUCT_CREATE_RESET });
@@ -42,7 +43,7 @@ const ProductListScreen = ({ history, match }) => {
     if (successCreate) {
       history.push(`/admin/product/${createdProduct._id}/edit`);
     } else {
-      dispatch(listProducts("", pageNumber));
+      dispatch(listProducts("", pageNumber, pageSize));
     }
   }, [
     dispatch,
@@ -51,7 +52,8 @@ const ProductListScreen = ({ history, match }) => {
     successDelete,
     successCreate,
     createdProduct,
-    pageNumber
+    pageNumber,
+    pageSize
   ]);
 
   const deleteHandler = (id) => {
@@ -127,6 +129,7 @@ const ProductListScreen = ({ history, match }) => {
             pages={pages}
             isAdmin={userInfo?.isAdmin}
             isProductList
+            history={history}
           />
         </>
       )}
