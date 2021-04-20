@@ -7,6 +7,9 @@ import Loader from "../components/Loader";
 import Paginate from "../components/Paginate";
 import { listProducts } from "../actions/productActions";
 import ProductCarousel from "../components/ProductCarousel";
+import { Helmet } from "react-helmet";
+import Meta from "../components/Meta";
+import { Link } from "react-router-dom";
 
 const HomeScreen = ({ match, history }) => {
   const dispatch = useDispatch();
@@ -25,11 +28,27 @@ const HomeScreen = ({ match, history }) => {
 
   return (
     <>
-      {!keyword && (
+      <Meta></Meta>
+      <Helmet>
+        <title>Welcome To Proshop</title>
+        <meta
+          name="description"
+          content="We sell the best products for cheap"
+        />
+        <meta
+          name="kewords"
+          content="electronics, buy electronics, cheap electronics"
+        />
+      </Helmet>
+      {!keyword ? (
         <>
           <h1>Our top sellers</h1>
           <ProductCarousel />
         </>
+      ) : (
+        <Link to="/" className="btn btn-light">
+          Go Back
+        </Link>
       )}
       <h1>Latest Products</h1>
       {loading ? (

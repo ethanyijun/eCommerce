@@ -20,6 +20,7 @@ import { Link, useParams } from "react-router-dom";
 import "../index.css";
 import { addToCart } from "../actions/cartActions";
 import { PRODUCT_CREATE_REVIEW_RESET } from "../constants/productConstants";
+import Meta from "../components/Meta";
 
 const ProductScreen = ({ history }) => {
   const dispatch = useDispatch();
@@ -78,6 +79,11 @@ const ProductScreen = ({ history }) => {
         <Message variant="danger">{error}</Message>
       ) : (
         <>
+          <Meta
+            title={product.name}
+            description={product.description}
+            keywords={product.name}
+          />
           <Row>
             <Col xs={12} md={6}>
               <Image src={product.image} fluid />
