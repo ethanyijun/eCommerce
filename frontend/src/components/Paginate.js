@@ -63,26 +63,37 @@ const Paginate = ({
             </Pagination>
           </Col>
         )}
-        <Col md={2}>
-          <DropdownButton
-            alignRight
-            title="Select Page Size"
-            id="dropdown-menu-align-right"
-            onSelect={handleSelect}
-            size="md"
-            className="my-3"
-          >
-            <Dropdown.Item style={pagesize === 2 ? selected : {}} eventKey="2">
-              2
-            </Dropdown.Item>
-            <Dropdown.Item style={pagesize === 4 ? selected : {}} eventKey="4">
-              4
-            </Dropdown.Item>
-            <Dropdown.Item style={pagesize === 8 ? selected : {}} eventKey="8">
-              8
-            </Dropdown.Item>
-          </DropdownButton>
-        </Col>
+        {productList?.products.length * productList?.pages > 2 && (
+          <Col md={2}>
+            <DropdownButton
+              alignRight
+              title="Select Page Size"
+              id="dropdown-menu-align-right"
+              onSelect={handleSelect}
+              size="md"
+              className="my-3"
+            >
+              <Dropdown.Item
+                style={pagesize === 2 ? selected : {}}
+                eventKey="2"
+              >
+                2
+              </Dropdown.Item>
+              <Dropdown.Item
+                style={pagesize === 4 ? selected : {}}
+                eventKey="4"
+              >
+                4
+              </Dropdown.Item>
+              <Dropdown.Item
+                style={pagesize === 8 ? selected : {}}
+                eventKey="8"
+              >
+                8
+              </Dropdown.Item>
+            </DropdownButton>
+          </Col>
+        )}
       </Row>
     </Container>
   );
