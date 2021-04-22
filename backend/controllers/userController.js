@@ -8,7 +8,7 @@ import generateToken from "../utils/generateToken.js";
 const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({
-    email,
+    email
   });
   if (user && (await user.matchPassword(password))) {
     res.json({
@@ -16,7 +16,7 @@ const authUser = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       isAdmin: user.isAdmin,
-      token: generateToken(user._id),
+      token: generateToken(user._id)
     });
   } else {
     res.status(401);
@@ -34,7 +34,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
-      isAdmin: user.isAdmin,
+      isAdmin: user.isAdmin
     });
   } else {
     res.status(401);
@@ -67,7 +67,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       name: updatedUser.name,
       email: updatedUser.email,
       isAdmin: updatedUser.isAdmin,
-      token: generateToken(updatedUser._id),
+      token: generateToken(updatedUser._id)
     });
   } else {
     res.status(401);
@@ -81,7 +81,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 const createUser = asyncHandler(async (req, res) => {
   const { email, password, name } = req.body;
   const userExists = await User.findOne({
-    email,
+    email
   });
   if (userExists) {
     res.status(400);
@@ -90,7 +90,7 @@ const createUser = asyncHandler(async (req, res) => {
   const user = await User.create({
     name,
     email,
-    password,
+    password
   });
   if (user) {
     res.status(200).json({
@@ -98,6 +98,7 @@ const createUser = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       isAdmin: user.isAdmin,
+      token: generateToken(user._id)
     });
   } else {
     res.status(401);
@@ -147,7 +148,7 @@ const updateUser = asyncHandler(async (req, res) => {
       _id: updatedUser._id,
       name: updatedUser.name,
       email: updatedUser.email,
-      isAdmin: updatedUser.isAdmin,
+      isAdmin: updatedUser.isAdmin
     });
   } else {
     res.status(401);
@@ -163,5 +164,5 @@ export {
   getUsers,
   deleteUser,
   getUserById,
-  updateUser,
+  updateUser
 };
